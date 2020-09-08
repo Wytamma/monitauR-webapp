@@ -1,4 +1,6 @@
-# eleventy-tailwindcss-alpinejs-starter
+# monitauR-webapp
+
+Webapp for [monitauR](https://github.com/Wytamma/monitauR)
 
 A starter repository showing how to build a website with the [Eleventy](https://www.11ty.dev), [Tailwind CSS](https://tailwindcss.com), and [Alpine.js](https://github.com/alpinejs/alpine).
 
