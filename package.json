@@ -1,7 +1,9 @@
 {
   "scripts": {
     "start": "eleventy --serve & postcss styles/tailwind.css --o _tmp/style.css --watch",
-    "build": "ELEVENTY_PRODUCTION=true eleventy && NODE_ENV=production postcss styles/tailwind.css --o _site/style.css"
+    "build": "ELEVENTY_PRODUCTION=true eleventy && NODE_ENV=production postcss styles/tailwind.css --o _site/style.css",
+    "build-gh": "ELEVENTY_PRODUCTION=true eleventy --pathprefix=monitauR-webapp && NODE_ENV=production postcss styles/tailwind.css --o _site/style.css"
+  
   },
   "devDependencies": {
     "@11ty/eleventy": "^0.11.0",
