@@ -9,8 +9,7 @@ jobs:
       - name: Build
         run: |
           npm install
-          ELEVENTY_PRODUCTION=true eleventy 
-          NODE_ENV=production postcss styles/tailwind.css --o _site/style.css
+          npm run build
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
