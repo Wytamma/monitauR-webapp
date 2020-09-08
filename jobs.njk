@@ -62,7 +62,7 @@
               return this.myForData;
             }
             return this.myForData.filter((item) => {
-              return item.employee_name
+              return item.name
                 .toLowerCase()
                 .includes(this.search.toLowerCase());
             });
