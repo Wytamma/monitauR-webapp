@@ -2,6 +2,8 @@
 
 Webapp for [monitauR](https://github.com/Wytamma/monitauR)
 
+![images/jobs.png](images/jobs.png)
+
 A starter repository showing how to build a website with the [Eleventy](https://www.11ty.dev), [Tailwind CSS](https://tailwindcss.com), and [Alpine.js](https://github.com/alpinejs/alpine).
 
 ## Getting Started
