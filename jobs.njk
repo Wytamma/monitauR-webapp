@@ -82,7 +82,7 @@
     <template x-if="showModal" >
       <div class="overflow-auto" style="background-color: rgba(0,0,0,0.5)" :class="{ 'fixed z-1 w-full h-full top-0 left-0 flex items-center justify-center': showModal }">
 			<!--Dialog-->
-			<div class="bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg py-4 text-left px-6" @click.away="closeModal" x-on:keydown.escape="closeModal">
+			<div style="max-height: 600px; overflow-y:scroll" class="bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg py-4 text-left px-6" @click.away="closeModal" x-on:keydown.escape="closeModal">
 
 				<!--Title-->
 				<div class="flex justify-between items-center pb-3">
