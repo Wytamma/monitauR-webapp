@@ -50,33 +50,40 @@
         type="search"
         class="block w-full bg-gray-200 focus:outline-none focus:bg-white focus:shadow text-gray-700 font-bold rounded-lg px-4 py-3"
       />
-      <div class="mt-4 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        <template x-for="item in filteredJobs" :key="item">
-          <div
-            class="flex items-center shadow hover:bg-indigo-100 hover:shadow-lg hover:rounded transition duration-150 ease-in-out transform hover:scale-105 p-3"
-            @click="openModal(item)"
-          >
+      <template x-if="filteredJobs">
+        <div class="mt-4 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <template x-for="item in filteredJobs" :key="item">
             <div
-              class="flex items-center w-10 h-10 text-2xl bg-red-500 rounded-full mr-4 justify-center"
+              class="flex items-center shadow hover:bg-indigo-100 hover:shadow-lg hover:rounded transition duration-150 ease-in-out transform hover:scale-105 p-3"
+              @click="openModal(item)"
             >
-            <p
-            class="text-white leading-none"
-            x-text="item.id"
-          ></p>
-            </div>
-            <div class="text-sm">
+              <div
+                class="flex items-center w-10 h-10 text-2xl bg-red-500 rounded-full mr-4 justify-center"
+              >
               <p
-                class="text-gray-900 leading-none"
-                x-text="item.name"
-              ></p>
-              <p
-                class="text-gray-600"
-                x-text="item.status"
-              ></p>
+              class="text-white leading-none"
+              x-text="item.id"
+            ></p>
+              </div>
+              <div class="text-sm">
+                <p
+                  class="text-gray-900 leading-none"
+                  x-text="item.name"
+                ></p>
+                <p
+                  class="text-gray-600"
+                  x-text="item.status"
+                ></p>
+              </div>
             </div>
-          </div>
-        </template>
-      </div>
+          </template>
+        </div>
+      </template>
+      <template x-if="filteredJobs.length == 0">
+        <div >
+          <img class="lg:w-1/2 w-full mx-auto" src="{{ '/images/use.png' | url }}">
+        </div>
+      </template>
     </div>
     <!--Overlay-->
     <template x-if="showModal" >
@@ -218,7 +225,7 @@
             return this.myForData.filter((item) => {
               return item.name
                 .toLowerCase()
-                .includes(this.search.toLowerCase());
+                .includes(this.search.toLowerCase()) || item.id == this.search;
             });
           },
         };
