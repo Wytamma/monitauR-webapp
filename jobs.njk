@@ -188,16 +188,25 @@
           showModal: false,
           isLoading: false,
           currentJob: null,
+          interval: null,
           steps: [],
           openModal (job) {
             this.currentJob = job
             this.showModal = true
             this.fetchSteps()
+            this.interval = setInterval(() => {
+              if (this.currentJob.status === "running") {
+                this.updateCurrentJob()
+                this.fetchSteps()
+              }
+            }, 2000);
           },
           closeModal () {
             this.showModal = false
             this.currentJob = null
             this.steps = []
+            clearInterval(this.interval);
+            this.fetchJobs()
           }, 
           fetchSteps() {
             this.isLoadingSteps = true;
@@ -206,7 +215,6 @@
               .then(data => {
                 this.isLoadingSteps = false;
                 this.steps = data.reverse();
-                console.log(data);
               });
           },
           fetchJobs() {
@@ -216,6 +224,17 @@
               .then(data => {
                 this.isLoading = false;
                 this.myForData = data.reverse();
+              });
+          },
+          updateCurrentJob() {
+            this.isLoading = true;
+            fetch(`https://monitaur-api.herokuapp.com/jobs/${this.currentJob.id}`)
+              .then(res => res.json())
+              .then(data => {
+                this.isLoading = false;
+                if (data) {
+                  this.currentJob = data[0]
+                }
               });
           },
           get filteredJobs() {
