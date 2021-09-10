@@ -39,7 +39,7 @@
       </div>
     </div>
   </header>
-<div class="bg-grey-100 px-3 pt-16 font-sans leading-normal tracking-normal"  x-data="loadJobs()" x-init="fetchJobs()" >
+<div class="bg-grey-100 px-3 pt-16 font-sans leading-normal tracking-normal"  x-data="loadJobs()" x-init="fetchJobs(); createJobsInterval()" >
 
   <div class="container pt-8 mx-auto"  >
       <input
@@ -188,13 +188,13 @@
           showModal: false,
           isLoading: false,
           currentJob: null,
-          interval: null,
+          currentInterval: null,
           steps: [],
           openModal (job) {
             this.currentJob = job
             this.showModal = true
             this.fetchSteps()
-            this.interval = setInterval(() => {
+            this.currentInterval = setInterval(() => {
               if (this.currentJob.status === "running") {
                 this.updateCurrentJob()
                 this.fetchSteps()
@@ -205,7 +205,7 @@
             this.showModal = false
             this.currentJob = null
             this.steps = []
-            clearInterval(this.interval);
+            clearInterval(this.currentInterval);
             this.fetchJobs()
           }, 
           fetchSteps() {
@@ -225,6 +225,12 @@
                 this.isLoading = false;
                 this.myForData = data.reverse();
               });
+            
+          },
+          createJobsInterval() {
+            this.jobsInterval = setInterval(() => {
+              this.fetchJobs()
+            }, 2000);
           },
           updateCurrentJob() {
             this.isLoading = true;
