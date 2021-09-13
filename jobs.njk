@@ -94,17 +94,9 @@
 				<!--Title-->
 				<div class="flex justify-between items-center pb-3">
           <div class="flex items-center justify-center">
-            <div
-                class="flex items-center justify-center w-10 h-10 text-2xl bg-red-500 rounded-full mr-4 "
-              >
-              <p
-              class="text-white leading-none"
-              x-text="currentJob.index"
-            ></p>
-              </div>
-              <div class="text-lg font-semibold">
+              <div class="py-2 text-2xl">
                 <p
-                  class="text-gray-900 leading-none"
+                  class="text-center text-gray-900 leading-none"
                   x-text="currentJob.name"
                 ></p>
               </div>
@@ -241,7 +233,9 @@
               .then(data => {
                 this.isLoading = false;
                 if (data) {
+                  const index = this.currentJob.index
                   this.currentJob = data[0]
+                  this.currentJob.index = index
                 }
               });
           },
