@@ -57,13 +57,26 @@
               class="flex items-center shadow hover:bg-indigo-100 hover:shadow-lg hover:rounded transition duration-150 ease-in-out transform hover:scale-105 p-3"
               @click="openModal(item, index + 1)"
             >
-              <div
-                class="flex items-center w-10 h-10 text-2xl bg-red-500 rounded-full mr-4 justify-center"
-              >
-              <p
-              class="text-white leading-none"
-              x-text="index + 1"
-            ></p>
+
+              <div x-show="item.status == 'finished'" class="bg-green-600 rounded-full mr-4 h-10 w-10 flex items-center justify-center z-50 text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" stroke="currentColor" fill="none">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+
+              <div x-show="item.status == 'error'" class="bg-red-500 rounded-full mr-4 h-10 w-10 flex items-center justify-center z-50 text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </div>
+
+              <div x-show="item.status == 'running'" class="bg-blue-500 rounded-full mr-4 h-10 w-10 flex items-center justify-center z-50 text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="w-4 h-4"  viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+              </div>
+              <div x-show="item.status == 'initialised'" class=" bg-gray-600 rounded-full mr-4 h-10 w-10 flex items-center justify-center z-50 text-white">
+                
               </div>
               <div class="text-sm">
                 <p
@@ -72,7 +85,7 @@
                 ></p>
                 <p
                   class="text-gray-600"
-                  x-text="item.status"
+                  x-text="item.updated"
                 ></p>
               </div>
             </div>
@@ -185,11 +198,10 @@
           user_token: new URLSearchParams(location.search).get('token'),
           openModal (job, index) {
             this.currentJob = job
-            this.currentJob.index = index
             this.showModal = true
             this.fetchSteps()
             this.currentInterval = setInterval(() => {
-              if (this.currentJob.status === "running") {
+              if (this.currentJob.status === "running" || this.currentJob.status === "initialised" ) {
                 this.updateCurrentJob()
                 this.fetchSteps()
               }
@@ -228,26 +240,24 @@
           },
           updateCurrentJob() {
             this.isLoading = true;
-            fetch(`https://monitaur-api.herokuapp.com/jobs/${this.currentJob.id}&user_token=${this.user_token}`)
+            fetch(`https://monitaur-api.herokuapp.com/jobs/${this.currentJob.id}?user_token=${this.user_token}`)
               .then(res => res.json())
               .then(data => {
                 this.isLoading = false;
                 if (data) {
-                  const index = this.currentJob.index
                   this.currentJob = data[0]
-                  this.currentJob.index = index
                 }
               });
           },
           get filteredJobs() {
             if (this.search === "") {
-              return this.myForData;
+              return this.myForData.sort((a, b) => a.updated < b.updated ? 1 : -1);;
             }
             return this.myForData.filter((item) => {
               return item.name
                 .toLowerCase()
-                .includes(this.search.toLowerCase()) || item.id == this.search;
-            });
+                .includes(this.search.toLowerCase())
+            }).sort((a, b) => a.updated < b.updated ? 1 : -1);
           },
         };
       }
