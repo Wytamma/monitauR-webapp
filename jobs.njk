@@ -52,17 +52,17 @@
       />
       <template x-if="filteredJobs">
         <div class="mt-4 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          <template x-for="item in filteredJobs" :key="item">
+          <template x-for="(item, index)  in filteredJobs" :key="item">
             <div
               class="flex items-center shadow hover:bg-indigo-100 hover:shadow-lg hover:rounded transition duration-150 ease-in-out transform hover:scale-105 p-3"
-              @click="openModal(item)"
+              @click="openModal(item, index + 1)"
             >
               <div
                 class="flex items-center w-10 h-10 text-2xl bg-red-500 rounded-full mr-4 justify-center"
               >
               <p
               class="text-white leading-none"
-              x-text="item.id"
+              x-text="index + 1"
             ></p>
               </div>
               <div class="text-sm">
@@ -99,7 +99,7 @@
               >
               <p
               class="text-white leading-none"
-              x-text="currentJob.id"
+              x-text="currentJob.index"
             ></p>
               </div>
               <div class="text-lg font-semibold">
@@ -191,8 +191,9 @@
           currentInterval: null,
           steps: [],
           user_token: new URLSearchParams(location.search).get('token'),
-          openModal (job) {
+          openModal (job, index) {
             this.currentJob = job
+            this.currentJob.index = index
             this.showModal = true
             this.fetchSteps()
             this.currentInterval = setInterval(() => {
